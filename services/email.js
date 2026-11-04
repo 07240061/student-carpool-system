@@ -24,6 +24,53 @@ async function sendVerificationEmail(to, token) {
     };
     const provider = (process.env.EMAIL_PROVIDER || 'smtp').toLowerCase();
 
+    if (provider === 'google-apps-script') {
+        const appsScriptSettings = ['APPS_SCRIPT_URL', 'APPS_SCRIPT_SECRET'];
+        const missingAppsScriptSettings = appsScriptSettings.filter((setting) => !process.env[setting]);
+        if (missingAppsScriptSettings.length > 0) {
+            throw new Error(`Missing email configuration: ${missingAppsScriptSettings.join(', ')}`);
+        }
+
+        const scriptUrl = new URL(process.env.APPS_SCRIPT_URL);
+        if (
+            scriptUrl.protocol !== 'https:' ||
+            scriptUrl.hostname !== 'script.google.com' ||
+            !scriptUrl.pathname.startsWith('/macros/s/') ||
+            !scriptUrl.pathname.endsWith('/exec')
+        ) {
+            throw new Error('APPS_SCRIPT_URL must be the HTTPS deployment URL ending in /exec.');
+        }
+
+        const senderName = process.env.MAIL_FROM.split('<')[0].trim() || 'Student Carpool';
+        const response = await fetch(scriptUrl, {
+            method: 'POST',
+            redirect: 'follow',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                secret: process.env.APPS_SCRIPT_SECRET,
+                to,
+                subject: email.subject,
+                text: email.text,
+                senderName
+            })
+        });
+        const responseText = await response.text();
+        let result;
+
+        try {
+            result = JSON.parse(responseText);
+        } catch {
+            throw new Error(`Google Apps Script returned an invalid response (${response.status}).`);
+        }
+
+        if (!response.ok || result.ok !== true) {
+            const detail = typeof result.error === 'string' ? result.error : `HTTP ${response.status}`;
+            throw new Error(`Google Apps Script email error: ${detail}`);
+        }
+
+        return;
+    }
+
     if (provider === 'resend') {
         if (!process.env.RESEND_API_KEY) {
             throw new Error('Missing email configuration: RESEND_API_KEY');

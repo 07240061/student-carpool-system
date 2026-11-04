@@ -58,6 +58,26 @@ sender on the verified domain, and `APP_URL` to the deployed HTTPS address in
 the Render environment settings. Keep the API key private. The default
 `EMAIL_PROVIDER=smtp` continues to use SMTP for local development.
 
+Alternatively, Google Apps Script can send verification emails using a Google
+account's mail quota. Copy `scripts/google-apps-script.js` into a new project at
+`script.google.com`. In **Project Settings → Script Properties**, add
+`CARPOOL_EMAIL_SECRET` with a new long random secret. Deploy the project as a
+Web app that executes as your account and is accessible to anyone; the shared
+secret protects the endpoint. Copy the deployed URL ending in `/exec`, then set
+these variables in Render (and `.env` for local use):
+
+```text
+EMAIL_PROVIDER=google-apps-script
+APPS_SCRIPT_URL=https://script.google.com/macros/s/your-deployment-id/exec
+APPS_SCRIPT_SECRET=the-same-secret-set-in-script-properties
+APP_URL=https://your-public-app-url
+MAIL_FROM=Student Carpool
+```
+
+Use your actual deployment and app URLs, keep the shared secret private, and
+redeploy the Apps Script whenever its code changes. Google may ask you to
+authorize the script to send email when you first deploy or run it.
+
 Verification links expire after 24 hours. If delivery fails, check the SMTP
 settings in `.env` and submit the registration form again with the same
 unverified email to send a fresh link. The registration page also has a
