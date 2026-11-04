@@ -19,11 +19,11 @@
     <% if (error) { %><p class="error"><%= error %></p><% } %>
     <form action="/register" method="POST">
       <label for="full_name">Full name</label>
-      <input id="full_name" name="full_name" type="text" required>
+      <input id="full_name" name="full_name" type="text" autocomplete="name" required>
       <label for="email">Email</label>
-      <input id="email" name="email" type="email" required>
+      <input id="email" name="email" type="email" autocomplete="email" autocapitalize="none" required>
       <label for="password">Password (at least 8 characters)</label>
-      <input id="password" name="password" type="password" minlength="8" required>
+      <input id="password" name="password" type="password" minlength="8" autocomplete="new-password" required>
       <button type="submit">Register</button>
       
 <div class="form-group">
@@ -38,7 +38,7 @@
       <h3 id="resend-verification-heading">Didn't receive the email?</h3>
       <form action="/resend-verification" method="POST">
         <label for="resend_email">Email address</label>
-        <input id="resend_email" name="email" type="email" required>
+        <input id="resend_email" name="email" type="email" autocomplete="email" autocapitalize="none" required>
         <button type="submit">Resend verification email</button>
       </form>
     </section>

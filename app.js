@@ -60,6 +60,7 @@ app.get('/register', (req, res) => res.render('auth/register', {
     verificationSent: req.query.verificationSent === '1'
 }));
 app.post('/register', async (req, res) => {
+    let registrationStage = 'account setup';
     try {
         const fullName = (req.body.full_name || '').trim();
         const email = (req.body.email || '').trim().toLowerCase();
@@ -79,6 +80,7 @@ app.post('/register', async (req, res) => {
             .createHash('sha256')
             .update(verificationToken)
             .digest('hex');
+        registrationStage = 'database';
         const result = await pool.query(
             `INSERT INTO users (
                 full_name, email, password, role, email_verified,
@@ -100,12 +102,17 @@ app.post('/register', async (req, res) => {
             });
         }
 
+        registrationStage = 'email';
         await sendVerificationEmail(email, verificationToken);
         res.redirect('/register?verificationSent=1');
     } catch (error) {
-        console.error('Registration error:', error.message);
+        console.error(`Registration ${registrationStage} error:`, error.code || '', error.message);
         res.status(500).render('auth/register', {
-            error: 'Could not send the verification email. Check your email settings, then submit the form again to retry.',
+            error: registrationStage === 'database'
+                ? 'The server could not create your account because its database is unavailable. Please contact the app owner.'
+                : registrationStage === 'email'
+                    ? 'Your account was created, but the verification email could not be sent. The app owner should check the email settings. You can resend the email after the issue is fixed.'
+                    : 'Could not complete registration. Please try again or contact the app owner.',
             verificationSent: false
         });
     }

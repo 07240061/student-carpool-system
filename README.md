@@ -19,7 +19,9 @@ A beginner-friendly Node.js, Express, EJS, and PostgreSQL starter project.
    ```
 
 4. Copy `.env.example` to a new file named `.env`.
-5. Update the database password, session secret, and SMTP settings in `.env`.
+5. Set either `DATABASE_URL` for a hosted PostgreSQL service, or configure
+   `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, and `DB_PASSWORD` for a local
+   PostgreSQL server. Also update the session secret and SMTP settings.
 6. In PostgreSQL, create the database:
 
    ```sql
@@ -60,6 +62,11 @@ To open a local verification link on a phone connected to the same Wi-Fi, set
 a fresh link. The computer and phone must stay on the same trusted Wi-Fi. If
 the phone cannot connect, check Windows Firewall and allow Node.js on private
 networks only; do not expose the development server to public networks.
+
+For a deployed site, configure `APP_URL`, database credentials, and SMTP
+settings in the hosting provider's environment settings. `APP_URL` must be the
+public HTTPS URL used on the phone, not `localhost` or a private Wi-Fi address.
+Restart or redeploy the app after changing environment settings.
 
 ## Database troubleshooting
 
