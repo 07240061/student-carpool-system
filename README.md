@@ -59,7 +59,7 @@ the Render environment settings. Keep the API key private. The default
 `EMAIL_PROVIDER=smtp` continues to use SMTP for local development.
 
 Alternatively, Google Apps Script can send verification emails using a Google
-account's mail quota. Copy `scripts/google-apps-script.js` into a new project at
+account's mail quota. Copy `scripts/google-apps-script.gs` into a new project at
 `script.google.com`. In **Project Settings → Script Properties**, add
 `CARPOOL_EMAIL_SECRET` with a new long random secret. Deploy the project as a
 Web app that executes as your account and is accessible to anyone; the shared
