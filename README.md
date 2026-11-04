@@ -51,6 +51,13 @@ secure mode, and credentials. `APP_URL` must be the URL
 where this app is reachable; use your deployed HTTPS URL outside local
 development.
 
+For Render, use an HTTPS email API instead of direct Gmail SMTP if SMTP delivery
+fails. For Resend, verify a sending domain with Resend, then set
+`EMAIL_PROVIDER=resend`, `RESEND_API_KEY` to the API key, `MAIL_FROM` to a
+sender on the verified domain, and `APP_URL` to the deployed HTTPS address in
+the Render environment settings. Keep the API key private. The default
+`EMAIL_PROVIDER=smtp` continues to use SMTP for local development.
+
 Verification links expire after 24 hours. If delivery fails, check the SMTP
 settings in `.env` and submit the registration form again with the same
 unverified email to send a fresh link. The registration page also has a

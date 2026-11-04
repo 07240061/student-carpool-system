@@ -154,7 +154,7 @@ app.post('/resend-verification', async (req, res) => {
             resendMessage: 'If an unverified account exists for that address, a new verification email has been sent.'
         });
     } catch (error) {
-        console.error('Resend verification email error:', error.message);
+        console.error('Resend verification email error:', error.code || error.statusCode || '', error.message);
         res.status(500).render('auth/register', {
             error: 'Could not resend the verification email. Check the email settings and try again.',
             verificationSent: false
