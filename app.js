@@ -2,9 +2,11 @@ const express = require('express');
 const path = require('path');
 const session = require('express-session');
 const bcrypt = require('bcrypt');
+const crypto = require('crypto');
 require('dotenv').config();
 
 const pool = require('./config/db');
+const { sendVerificationEmail } = require('./services/email');
 const app = express();
 
 app.set('view engine', 'ejs');
@@ -53,7 +55,10 @@ app.get('/test-db', async (req, res) => {
     }
 });
 
-app.get('/register', (req, res) => res.render('auth/register', { error: null }));
+app.get('/register', (req, res) => res.render('auth/register', {
+    error: null,
+    verificationSent: req.query.verificationSent === '1'
+}));
 app.post('/register', async (req, res) => {
     try {
         const fullName = (req.body.full_name || '').trim();
@@ -69,76 +74,203 @@ app.post('/register', async (req, res) => {
         const role = req.body.role === 'driver' ? 'driver' : 'student';
 
         const hashedPassword = await bcrypt.hash(password, 10);
-        await pool.query(
-          'INSERT INTO users (full_name, email, password, role) VALUES ($1, $2, $3, $4)',
-          [fullName, email, hashedPassword, role]
+        const verificationToken = crypto.randomBytes(32).toString('hex');
+        const verificationTokenHash = crypto
+            .createHash('sha256')
+            .update(verificationToken)
+            .digest('hex');
+        const result = await pool.query(
+            `INSERT INTO users (
+                full_name, email, password, role, email_verified,
+                email_verification_token_hash, email_verification_expires_at
+            )
+            VALUES ($1, $2, $3, $4, FALSE, $5, NOW() + INTERVAL '24 hours')
+            ON CONFLICT (email) DO UPDATE
+            SET email_verification_token_hash = EXCLUDED.email_verification_token_hash,
+                email_verification_expires_at = EXCLUDED.email_verification_expires_at
+            WHERE users.email_verified = FALSE
+            RETURNING user_id`,
+            [fullName, email, hashedPassword, role, verificationTokenHash]
         );
 
-        res.redirect('/login?registered=1');
-    } catch (error) {
-        if (error.code === '23505') {
+        if (result.rowCount === 0) {
             return res.status(409).render('auth/register', {
-                error: 'That email is already registered. Try another email or log in.'
+                error: 'That email is already registered. Try another email or log in.',
+                verificationSent: false
             });
         }
+
+        await sendVerificationEmail(email, verificationToken);
+        res.redirect('/register?verificationSent=1');
+    } catch (error) {
         console.error('Registration error:', error.message);
         res.status(500).render('auth/register', {
-            error: 'Registration failed. Check the VS Code terminal.'
+            error: 'Could not send the verification email. Check your email settings, then submit the form again to retry.',
+            verificationSent: false
         });
     }
 });
 
+app.post('/resend-verification', async (req, res) => {
+    const email = typeof req.body.email === 'string'
+        ? req.body.email.trim().toLowerCase()
+        : '';
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        return res.status(400).render('auth/register', {
+            error: 'Enter a valid email address to resend the verification link.',
+            verificationSent: false
+        });
+    }
+
+    try {
+        const verificationToken = crypto.randomBytes(32).toString('hex');
+        const verificationTokenHash = crypto
+            .createHash('sha256')
+            .update(verificationToken)
+            .digest('hex');
+        const result = await pool.query(
+            `UPDATE users
+             SET email_verification_token_hash = $1,
+                 email_verification_expires_at = NOW() + INTERVAL '24 hours'
+             WHERE email = $2 AND email_verified = FALSE
+             RETURNING email`,
+            [verificationTokenHash, email]
+        );
+
+        if (result.rowCount > 0) {
+            await sendVerificationEmail(result.rows[0].email, verificationToken);
+        }
+
+        res.render('auth/register', {
+            error: null,
+            verificationSent: false,
+            resendMessage: 'If an unverified account exists for that address, a new verification email has been sent.'
+        });
+    } catch (error) {
+        console.error('Resend verification email error:', error.message);
+        res.status(500).render('auth/register', {
+            error: 'Could not resend the verification email. Check the email settings and try again.',
+            verificationSent: false
+        });
+    }
+});
+
+app.get('/verify-email', async (req, res) => {
+    const token = req.query.token;
+    if (typeof token !== 'string' || !/^[a-f0-9]{64}$/i.test(token)) {
+        return res.redirect('/login?verification=invalid');
+    }
+
+    try {
+        const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
+        const result = await pool.query(
+            `UPDATE users
+             SET email_verified = TRUE,
+                 email_verification_token_hash = NULL,
+                 email_verification_expires_at = NULL
+             WHERE email_verification_token_hash = $1
+               AND email_verification_expires_at > NOW()
+             RETURNING user_id`,
+            [tokenHash]
+        );
+
+        res.redirect(result.rowCount ? '/login?verified=1' : '/login?verification=invalid');
+    } catch (error) {
+        console.error('Email verification error:', error.message);
+        res.status(500).send('Could not verify your email. Please try again later.');
+    }
+});
+
 app.get('/login', (req, res) => res.render('auth/login', {
-    error: null, registered: req.query.registered === '1'
+    error: null,
+    registered: req.query.registered === '1',
+    verified: req.query.verified === '1',
+    verificationInvalid: req.query.verification === 'invalid'
 }));
 app.post('/login', async (req, res) => {
     try {
         const email = (req.body.email || '').trim().toLowerCase();
         const password = req.body.password || '';
         const result = await pool.query(
-            'SELECT user_id, full_name, email, password, role FROM users WHERE email = $1',
+            'SELECT user_id, full_name, email, password, role, email_verified FROM users WHERE email = $1',
             [email]
         );
 
         if (result.rows.length === 0) {
             return res.status(401).render('auth/login', {
-                error: 'Email or password is incorrect.', registered: false
+                error: 'Email or password is incorrect.',
+                registered: false,
+                verified: false,
+                verificationInvalid: false
             });
         }
         const user = result.rows[0];
         const matches = await bcrypt.compare(password, user.password);
         if (!matches) {
           return res.status(401).render('auth/login', {
-        error: 'Email or password is incorrect.', registered: false
-    });
-}
+              error: 'Email or password is incorrect.',
+              registered: false,
+              verified: false,
+              verificationInvalid: false
+          });
+        }
 
-req.session.user = {
-    user_id: user.user_id,
-    full_name: user.full_name,
-    email: user.email,
-    role: user.role
-};
+        if (!user.email_verified) {
+            return res.status(403).render('auth/login', {
+                error: 'Please verify your email using the link we sent before logging in.',
+                registered: false,
+                verified: false,
+                verificationInvalid: false
+            });
+        }
 
-req.session.userId = user.user_id;
-req.session.role = user.role;
+        req.session.user = {
+            user_id: user.user_id,
+            full_name: user.full_name,
+            email: user.email,
+            role: user.role
+        };
 
-if (user.role === 'driver') {
-    return res.redirect('/driver/dashboard');
-}
+        req.session.userId = user.user_id;
+        req.session.role = user.role;
 
-return res.redirect('/student/dashboard');
+        if (user.role === 'driver') {
+            return res.redirect('/driver/dashboard');
+        }
+
+        return res.redirect('/student/dashboard');
 
     } catch (error) {
         console.error('Login error:', error.message);
         res.status(500).render('auth/login', {
-            error: 'Login failed. Check the VS Code terminal.', registered: false
+            error: 'Login failed. Check the VS Code terminal.',
+            registered: false,
+            verified: false,
+            verificationInvalid: false
         });
     }
 });
 
 app.get('/dashboard', requireLogin, (req, res) => {
     res.render('dashboard', { user: req.session.user });
+});
+
+app.get('/profile', requireLogin, async (req, res) => {
+    try {
+        const result = await pool.query(
+            'SELECT full_name, email, role, created_at FROM users WHERE user_id = $1',
+            [req.session.user.user_id]
+        );
+
+        if (result.rowCount === 0) {
+            return res.status(404).send('Profile not found.');
+        }
+
+        res.render('profile', { user: result.rows[0] });
+    } catch (error) {
+        console.error('Profile error:', error.message);
+        res.status(500).send('Could not load your profile. Please try again later.');
+    }
 });
 
 app.get('/driver/dashboard',

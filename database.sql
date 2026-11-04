@@ -8,9 +8,23 @@ CREATE TABLE IF NOT EXISTS users (
     email VARCHAR(150) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
     role VARCHAR(20) NOT NULL DEFAULT 'student'
-        CHECK (role IN ('student', 'admin')),
+        CHECK (role IN ('student', 'driver', 'admin')),
+    email_verified BOOLEAN NOT NULL DEFAULT FALSE,
+    email_verification_token_hash CHAR(64),
+    email_verification_expires_at TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+ALTER TABLE users
+    ADD COLUMN IF NOT EXISTS email_verified BOOLEAN NOT NULL DEFAULT TRUE,
+    ADD COLUMN IF NOT EXISTS email_verification_token_hash CHAR(64),
+    ADD COLUMN IF NOT EXISTS email_verification_expires_at TIMESTAMP;
+ALTER TABLE users ALTER COLUMN email_verified SET DEFAULT FALSE;
+
+ALTER TABLE users DROP CONSTRAINT IF EXISTS users_role_check;
+ALTER TABLE users
+    ADD CONSTRAINT users_role_check
+    CHECK (role IN ('student', 'driver', 'admin'));
 
 CREATE TABLE IF NOT EXISTS vehicles (
     vehicle_id SERIAL PRIMARY KEY,

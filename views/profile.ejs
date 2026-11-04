@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Profile | CampusRide</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="navbar">
+      <a href="/<%= user.role %>/dashboard" class="brand">CampusRide</a>
+      <div class="nav-links">
+        <a href="/<%= user.role %>/dashboard">Dashboard</a>
+        <a href="/logout">Logout</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container">
+    <h1>My Profile</h1>
+    <p>Account information</p>
+    <dl>
+      <dt>Full name</dt>
+      <dd><%= user.full_name %></dd>
+      <dt>Email</dt>
+      <dd><%= user.email %></dd>
+      <dt>Account type</dt>
+      <dd><%= user.role.charAt(0).toUpperCase() + user.role.slice(1) %></dd>
+      <dt>Member since</dt>
+      <dd><%= user.created_at ? new Date(user.created_at).toLocaleDateString() : 'Not available' %></dd>
+    </dl>
+    <p><a href="/<%= user.role %>/dashboard">Back to dashboard</a></p>
+  </main>
+</body>
+</html>

@@ -10,6 +10,12 @@
   <main class="container">
     <h1>Student Carpool System</h1>
     <h2>Create an account</h2>
+    <% if (verificationSent) { %>
+      <p class="success">Account created. Check your email and click the verification link before logging in. The link expires in 24 hours.</p>
+    <% } %>
+    <% if (typeof resendMessage !== 'undefined' && resendMessage) { %>
+      <p class="success"><%= resendMessage %></p>
+    <% } %>
     <% if (error) { %><p class="error"><%= error %></p><% } %>
     <form action="/register" method="POST">
       <label for="full_name">Full name</label>
@@ -28,6 +34,14 @@
   </select>
 </div>
     </form>
+    <section aria-labelledby="resend-verification-heading">
+      <h3 id="resend-verification-heading">Didn't receive the email?</h3>
+      <form action="/resend-verification" method="POST">
+        <label for="resend_email">Email address</label>
+        <input id="resend_email" name="email" type="email" required>
+        <button type="submit">Resend verification email</button>
+      </form>
+    </section>
     <p>Already have an account? <a href="/login">Log in</a></p>
     <p><a href="/">Back to home</a></p>
   </main>

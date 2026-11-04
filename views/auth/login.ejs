@@ -11,6 +11,8 @@
     <h1>Student Carpool System</h1>
     <h2>Log in</h2>
     <% if (registered) { %><p class="success">Registration successful. You can log in now.</p><% } %>
+    <% if (verified) { %><p class="success">Email verified. You can log in now.</p><% } %>
+    <% if (verificationInvalid) { %><p class="error">That verification link is invalid or expired. Register again with the same email to send a new link.</p><% } %>
     <% if (error) { %><p class="error"><%= error %></p><% } %>
     <form action="/login" method="POST">
       <label for="email">Email</label>
