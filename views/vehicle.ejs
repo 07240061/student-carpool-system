@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register Vehicle | Student Carpool</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <main class="container">
+    <h1>Register Your Vehicle</h1>
+    <% if (error) { %><p class="error"><%= error %></p><% } %>
+    <form action="/vehicle" method="POST">
+      <label for="vehicle_model">Vehicle model</label>
+      <input id="vehicle_model" name="vehicle_model" type="text" required>
+      <label for="vehicle_number">Vehicle number</label>
+      <input id="vehicle_number" name="vehicle_number" type="text" required>
+      <label for="seat_capacity">Seat capacity</label>
+      <input id="seat_capacity" name="seat_capacity" type="number" min="1" max="20" required>
+      <button type="submit">Register Vehicle</button>
+    </form>
+    <p><a href="/trips/new">Create a trip</a></p>
+    <p><a href="/dashboard">Back to dashboard</a></p>
+  </main>
+</body>
+</html>

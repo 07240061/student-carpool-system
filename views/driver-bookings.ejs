@@ -1,0 +1,9 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Driver Requests</title>
+<link rel="stylesheet" href="/css/style.css"></head><body><main class="container"><h1>Requests for my trips</h1>
+<% if (!bookings.length) { %><p>No booking requests.</p><% } %>
+<% bookings.forEach(b => { %><section class="trip-card"><h2><%= b.starting_point %> → <%= b.destination %></h2>
+<p>Passenger: <%= b.passenger_name %></p><p>Departure: <%= new Date(b.departure_time).toLocaleString() %></p>
+<p>Seats: <%= b.seats_requested %></p><p>Status: <%= b.status %></p>
+<% if (b.status === 'pending') { %><form action="/driver/bookings/<%= b.booking_id %>/accept" method="POST"><button>Accept</button></form>
+<form action="/driver/bookings/<%= b.booking_id %>/reject" method="POST"><button>Reject</button></form><% } %>
+</section><% }) %><a href="/dashboard">Dashboard</a></main></body></html>

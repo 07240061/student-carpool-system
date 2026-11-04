@@ -1,0 +1,1511 @@
+
+
+* {
+    box-sizing: border-box;
+}
+
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f8f7;
+    color: #263238;
+    line-height: 1.6;
+}
+
+/* =========================
+   2. HEADER
+========================= */
+
+header {
+    background: linear-gradient(135deg, #064e3b, #059669);
+    color: white;
+    text-align: center;
+    padding: 35px 20px;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 32px;
+}
+
+header p {
+    margin-bottom: 0;
+    color: #e0f2f1;
+}
+
+/* =========================
+   3. MAIN CONTENT
+========================= */
+
+main {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: white;
+    border-radius: 16px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+}
+
+h1,
+h2,
+h3 {
+    line-height: 1.3;
+}
+
+h2 {
+    color: #065f46;
+}
+
+/* =========================
+   4. CONTAINERS
+========================= */
+
+.container {
+    max-width: 650px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: white;
+    border-radius: 16px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.07);
+}
+
+/* =========================
+   5. BUTTONS
+========================= */
+
+button,
+.btn,
+.buttons a {
+    display: inline-block;
+    padding: 12px 22px;
+    background-color: #059669;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+button:hover,
+.btn:hover,
+.buttons a:hover {
+    background-color: #047857;
+    transform: translateY(-2px);
+}
+
+.buttons {
+    margin-top: 25px;
+}
+
+.buttons a {
+    margin: 6px;
+}
+
+/* =========================
+   6. FORMS
+========================= */
+
+form {
+    width: 100%;
+}
+
+label {
+    display: block;
+    margin-top: 16px;
+    margin-bottom: 6px;
+    font-weight: bold;
+    color: #374151;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 12px 14px;
+    margin-top: 4px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    background-color: #ffffff;
+    font-family: Arial, sans-serif;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: #059669;
+    box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.12);
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+    width: auto;
+}
+
+form button {
+    margin-top: 22px;
+}
+
+/* =========================
+   7. LINKS
+========================= */
+
+a {
+    color: #047857;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #065f46;
+    text-decoration: underline;
+}
+
+/* =========================
+   8. MESSAGES
+========================= */
+
+.error {
+    padding: 10px 14px;
+    color: #b91c1c;
+    background-color: #fef2f2;
+    border-radius: 8px;
+    margin: 12px 0;
+}
+
+.success {
+    padding: 10px 14px;
+    color: #166534;
+    background-color: #f0fdf4;
+    border-radius: 8px;
+    margin: 12px 0;
+}
+
+.note {
+    margin-top: 24px;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+/* =========================
+   9. TRIP CARDS
+========================= */
+
+.trip-card {
+    padding: 20px;
+    margin: 18px 0;
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-left: 5px solid #059669;
+    border-radius: 12px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.trip-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+}
+
+.trip-card h2,
+.trip-card h3 {
+    margin-top: 0;
+    color: #065f46;
+}
+
+/* =========================
+   10. TABLES
+========================= */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: white;
+}
+
+th,
+td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+th {
+    background-color: #ecfdf5;
+    color: #065f46;
+}
+
+tr:hover {
+    background-color: #f9fafb;
+}
+
+/* =========================
+   11. DASHBOARD CARDS
+========================= */
+
+.card {
+    padding: 22px;
+    background-color: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+}
+
+/* =========================
+   12. MOBILE RESPONSIVE
+========================= */
+
+@media (max-width: 768px) {
+    header {
+        padding: 25px 15px;
+    }
+
+    header h1 {
+        font-size: 26px;
+    }
+
+    main,
+    .container {
+        width: calc(100% - 24px);
+        margin: 20px auto;
+        padding: 20px;
+    }
+
+    .buttons a {
+        display: block;
+        margin: 10px 0;
+        text-align: center;
+    }
+
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}
+
+/* Dashboard navigation buttons */
+.bottom-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    padding: 24px;
+    margin-top: 25px;
+    background: white;
+    border: 1px solid #dcece4;
+    border-radius: 16px;
+}
+
+.bottom-links a {
+    display: inline-block;
+    padding: 14px 20px;
+    background: #ecfdf5;
+    color: #047857;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.bottom-links a:hover {
+    background: #059669;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 12px rgba(5, 150, 105, 0.15);
+}
+
+@media (max-width: 600px) {
+    .bottom-links {
+        flex-direction: column;
+    }
+
+    .bottom-links a {
+        text-align: center;
+    }
+}
+
+/* Make dashboard action cards clickable */
+.action-card {
+    display: block;
+    padding: 24px;
+    background: #ffffff;
+    border: 1px solid #dcece4;
+    border-radius: 17px;
+    text-decoration: none;
+    color: #24352f;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.action-card:hover {
+    transform: translateY(-5px);
+    border-color: #059669;
+    box-shadow: 0 10px 25px rgba(5, 150, 105, 0.12);
+    text-decoration: none;
+}
+
+.action-card h3 {
+    color: #064e3b;
+    margin: 12px 0;
+}
+
+.action-card p {
+    color: #64748b;
+    line-height: 1.6;
+}
+
+.action-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 55px;
+    height: 55px;
+    background: #d1fae5;
+    border-radius: 14px;
+    font-size: 25px;
+}
+
+/* DRIVER DASHBOARD */
+
+.dashboard-main-btn {
+    display: inline-block;
+    margin-top: 15px;
+    background: white;
+    color: #065f46;
+}
+
+.dashboard-main-btn:hover {
+    background: #d1fae5;
+    color: #064e3b;
+}
+
+.section-title {
+    font-size: 25px;
+    margin: 35px 0 20px;
+}
+
+.quick-actions {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.action-card {
+    min-height: 220px;
+    padding: 25px;
+}
+
+.action-card h3 {
+    font-size: 19px;
+}
+
+.card-link {
+    display: inline-block;
+    margin-top: 18px;
+    color: #047857;
+    font-weight: bold;
+}
+
+.driver-info-section {
+    margin-top: 45px;
+}
+
+.section-heading {
+    margin-bottom: 20px;
+}
+
+.section-heading h2 {
+    margin-bottom: 5px;
+}
+
+.section-heading p {
+    color: #64756e;
+}
+
+.driver-feature-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.driver-feature {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    padding: 23px;
+    background: white;
+    border: 1px solid #dcebe3;
+    border-radius: 17px;
+    transition: .3s;
+}
+
+.driver-feature:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(6, 78, 59, .08);
+}
+
+.driver-feature > span {
+    font-size: 30px;
+}
+
+.driver-feature h3 {
+    margin: 0 0 8px;
+}
+
+.driver-feature p {
+    color: #64756e;
+    font-size: 14px;
+}
+
+.driver-feature a {
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.driver-feature a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 900px) {
+    .quick-actions {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .driver-feature-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 550px) {
+    .quick-actions {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* FIX DRIVER NAVIGATION BAR */
+
+.site-header {
+    background: #064e3b;
+    border-bottom: none;
+    padding: 12px 0;
+}
+
+.navbar {
+    width: 95%;
+    max-width: 1400px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.brand {
+    color: white !important;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-left: auto;
+}
+
+.nav-links a {
+    color: white !important;
+    background: transparent;
+    padding: 12px 15px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.nav-links a:hover {
+    background: #047857;
+    color: white !important;
+}
+
+/* DASHBOARD CARD ALIGNMENT */
+
+.quick-actions {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 22px;
+    align-items: stretch;
+}
+
+.action-card {
+    display: flex;
+    flex-direction: column;
+    min-height: 320px;
+    padding: 28px;
+    border-radius: 20px;
+    background: white;
+    border: 1px solid #dcebe3;
+    text-decoration: none;
+    transition: 0.3s ease;
+}
+
+.action-card:hover {
+    transform: translateY(-5px);
+    border-color: #059669;
+    box-shadow: 0 12px 25px rgba(6, 78, 59, 0.10);
+}
+
+.action-card h3 {
+    margin: 15px 0 8px;
+    color: #064e3b;
+    font-size: 21px;
+}
+
+.action-card p {
+    color: #64756e;
+    line-height: 1.7;
+}
+
+.card-link {
+    margin-top: auto;
+    padding-top: 20px;
+    color: #047857;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.card-link:hover {
+    color: #064e3b;
+}
+
+@media (max-width: 900px) {
+    .quick-actions {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .nav-links {
+        justify-content: flex-start;
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    .quick-actions {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* =================================
+   STUDENT DASHBOARD DESIGN
+================================= */
+
+.student-dashboard {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+/* Welcome banner */
+.student-hero {
+    background: linear-gradient(120deg, #064e3b, #059669);
+    color: white;
+    padding: 40px;
+    border-radius: 22px;
+    margin-bottom: 35px;
+    box-shadow: 0 10px 25px rgba(6, 78, 59, 0.12);
+}
+
+.student-hero h1 {
+    color: white;
+    font-size: 32px;
+    margin-top: 0;
+}
+
+.student-hero p {
+    color: #e4fff2;
+    font-size: 16px;
+}
+
+/* Dashboard heading */
+.student-section-title {
+    color: #064e3b;
+    font-size: 25px;
+    margin-bottom: 22px;
+}
+
+/* Dashboard cards */
+.student-actions {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 22px;
+    align-items: stretch;
+}
+
+.student-card {
+    display: flex;
+    flex-direction: column;
+    min-height: 280px;
+    padding: 25px;
+    background: white;
+    border: 1px solid #dcebe3;
+    border-radius: 20px;
+    text-decoration: none;
+    transition: 0.3s ease;
+}
+
+.student-card:hover {
+    transform: translateY(-6px);
+    border-color: #059669;
+    box-shadow: 0 12px 25px rgba(6, 78, 59, 0.10);
+}
+
+/* Card icons */
+.student-icon {
+    width: 58px;
+    height: 58px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #d1fae5;
+    border-radius: 16px;
+    font-size: 28px;
+}
+
+/* Card text */
+.student-card h3 {
+    color: #064e3b;
+    font-size: 20px;
+    margin: 17px 0 8px;
+}
+
+.student-card p {
+    color: #64756e;
+    line-height: 1.7;
+    margin: 0;
+}
+
+/* Align links at the bottom */
+.student-card-link {
+    margin-top: auto;
+    padding-top: 22px;
+    color: #047857;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.student-card-link:hover {
+    color: #064e3b;
+}
+
+/* Responsive design */
+@media (max-width: 900px) {
+    .student-actions {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .student-dashboard {
+        padding: 12px;
+    }
+
+    .student-hero {
+        padding: 25px;
+    }
+
+    .student-hero h1 {
+        font-size: 25px;
+    }
+
+    .student-actions {
+        grid-template-columns: 1fr;
+    }
+
+    .student-card {
+        min-height: 230px;
+    }
+}
+
+/* HOMEPAGE MAIN HEADING - GREEN */
+
+.hero h1,
+.hero-content h1,
+.hero-text h1,
+.hero-section h1 {
+    color: #047857 !important;
+    font-weight: 800;
+}
+
+/* Green heading highlight */
+.hero h1 span,
+.hero-content h1 span,
+.hero-text h1 span,
+.hero-section h1 span {
+    color: #059669 !important;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f8f7;
+    color: #263238;
+    line-height: 1.6;
+}
+
+/* =========================
+   2. HEADER
+========================= */
+
+header {
+    background: linear-gradient(135deg, #064e3b, #059669);
+    color: white;
+    text-align: center;
+    padding: 35px 20px;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 32px;
+}
+
+header p {
+    margin-bottom: 0;
+    color: #e0f2f1;
+}
+
+/* =========================
+   3. MAIN CONTENT
+========================= */
+
+main {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: white;
+    border-radius: 16px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+}
+
+h1,
+h2,
+h3 {
+    line-height: 1.3;
+}
+
+h2 {
+    color: #065f46;
+}
+
+/* =========================
+   4. CONTAINERS
+========================= */
+
+.container {
+    max-width: 650px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: white;
+    border-radius: 16px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.07);
+}
+
+/* =========================
+   5. BUTTONS
+========================= */
+
+button,
+.btn,
+.buttons a {
+    display: inline-block;
+    padding: 12px 22px;
+    background-color: #059669;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+button:hover,
+.btn:hover,
+.buttons a:hover {
+    background-color: #047857;
+    transform: translateY(-2px);
+}
+
+.buttons {
+    margin-top: 25px;
+}
+
+.buttons a {
+    margin: 6px;
+}
+
+/* =========================
+   6. FORMS
+========================= */
+
+form {
+    width: 100%;
+}
+
+label {
+    display: block;
+    margin-top: 16px;
+    margin-bottom: 6px;
+    font-weight: bold;
+    color: #374151;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 12px 14px;
+    margin-top: 4px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    background-color: #ffffff;
+    font-family: Arial, sans-serif;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: #059669;
+    box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.12);
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+    width: auto;
+}
+
+form button {
+    margin-top: 22px;
+}
+
+/* =========================
+   7. LINKS
+========================= */
+
+a {
+    color: #047857;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #065f46;
+    text-decoration: underline;
+}
+
+/* =========================
+   8. MESSAGES
+========================= */
+
+.error {
+    padding: 10px 14px;
+    color: #b91c1c;
+    background-color: #fef2f2;
+    border-radius: 8px;
+    margin: 12px 0;
+}
+
+.success {
+    padding: 10px 14px;
+    color: #166534;
+    background-color: #f0fdf4;
+    border-radius: 8px;
+    margin: 12px 0;
+}
+
+.note {
+    margin-top: 24px;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+/* =========================
+   9. TRIP CARDS
+========================= */
+
+.trip-card {
+    padding: 20px;
+    margin: 18px 0;
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-left: 5px solid #059669;
+    border-radius: 12px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.trip-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+}
+
+.trip-card h2,
+.trip-card h3 {
+    margin-top: 0;
+    color: #065f46;
+}
+
+/* =========================
+   10. TABLES
+========================= */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: white;
+}
+
+th,
+td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+th {
+    background-color: #ecfdf5;
+    color: #065f46;
+}
+
+tr:hover {
+    background-color: #f9fafb;
+}
+
+/* =========================
+   11. DASHBOARD CARDS
+========================= */
+
+.card {
+    padding: 22px;
+    background-color: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+}
+
+/* =========================
+   12. MOBILE RESPONSIVE
+========================= */
+
+@media (max-width: 768px) {
+    header {
+        padding: 25px 15px;
+    }
+
+    header h1 {
+        font-size: 26px;
+    }
+
+    main,
+    .container {
+        width: calc(100% - 24px);
+        margin: 20px auto;
+        padding: 20px;
+    }
+
+    .buttons a {
+        display: block;
+        margin: 10px 0;
+        text-align: center;
+    }
+
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}
+
+/* Dashboard navigation buttons */
+.bottom-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    padding: 24px;
+    margin-top: 25px;
+    background: white;
+    border: 1px solid #dcece4;
+    border-radius: 16px;
+}
+
+.bottom-links a {
+    display: inline-block;
+    padding: 14px 20px;
+    background: #ecfdf5;
+    color: #047857;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.bottom-links a:hover {
+    background: #059669;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 12px rgba(5, 150, 105, 0.15);
+}
+
+@media (max-width: 600px) {
+    .bottom-links {
+        flex-direction: column;
+    }
+
+    .bottom-links a {
+        text-align: center;
+    }
+}
+
+/* Make dashboard action cards clickable */
+.action-card {
+    display: block;
+    padding: 24px;
+    background: #ffffff;
+    border: 1px solid #dcece4;
+    border-radius: 17px;
+    text-decoration: none;
+    color: #24352f;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.action-card:hover {
+    transform: translateY(-5px);
+    border-color: #059669;
+    box-shadow: 0 10px 25px rgba(5, 150, 105, 0.12);
+    text-decoration: none;
+}
+
+.action-card h3 {
+    color: #064e3b;
+    margin: 12px 0;
+}
+
+.action-card p {
+    color: #64748b;
+    line-height: 1.6;
+}
+
+.action-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 55px;
+    height: 55px;
+    background: #d1fae5;
+    border-radius: 14px;
+    font-size: 25px;
+}
+
+/* DRIVER DASHBOARD */
+
+.dashboard-main-btn {
+    display: inline-block;
+    margin-top: 15px;
+    background: white;
+    color: #065f46;
+}
+
+.dashboard-main-btn:hover {
+    background: #d1fae5;
+    color: #064e3b;
+}
+
+.section-title {
+    font-size: 25px;
+    margin: 35px 0 20px;
+}
+
+.quick-actions {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.action-card {
+    min-height: 220px;
+    padding: 25px;
+}
+
+.action-card h3 {
+    font-size: 19px;
+}
+
+.card-link {
+    display: inline-block;
+    margin-top: 18px;
+    color: #047857;
+    font-weight: bold;
+}
+
+.driver-info-section {
+    margin-top: 45px;
+}
+
+.section-heading {
+    margin-bottom: 20px;
+}
+
+.section-heading h2 {
+    margin-bottom: 5px;
+}
+
+.section-heading p {
+    color: #64756e;
+}
+
+.driver-feature-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.driver-feature {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    padding: 23px;
+    background: white;
+    border: 1px solid #dcebe3;
+    border-radius: 17px;
+    transition: .3s;
+}
+
+.driver-feature:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(6, 78, 59, .08);
+}
+
+.driver-feature > span {
+    font-size: 30px;
+}
+
+.driver-feature h3 {
+    margin: 0 0 8px;
+}
+
+.driver-feature p {
+    color: #64756e;
+    font-size: 14px;
+}
+
+.driver-feature a {
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.driver-feature a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 900px) {
+    .quick-actions {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .driver-feature-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 550px) {
+    .quick-actions {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* FIX DRIVER NAVIGATION BAR */
+
+.site-header {
+    background: #064e3b;
+    border-bottom: none;
+    padding: 12px 0;
+}
+
+.navbar {
+    width: 95%;
+    max-width: 1400px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.brand {
+    color: white !important;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-left: auto;
+}
+
+.nav-links a {
+    color: white !important;
+    background: transparent;
+    padding: 12px 15px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.nav-links a:hover {
+    background: #047857;
+    color: white !important;
+}
+
+/* DASHBOARD CARD ALIGNMENT */
+
+.quick-actions {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 22px;
+    align-items: stretch;
+}
+
+.action-card {
+    display: flex;
+    flex-direction: column;
+    min-height: 320px;
+    padding: 28px;
+    border-radius: 20px;
+    background: white;
+    border: 1px solid #dcebe3;
+    text-decoration: none;
+    transition: 0.3s ease;
+}
+
+.action-card:hover {
+    transform: translateY(-5px);
+    border-color: #059669;
+    box-shadow: 0 12px 25px rgba(6, 78, 59, 0.10);
+}
+
+.action-card h3 {
+    margin: 15px 0 8px;
+    color: #064e3b;
+    font-size: 21px;
+}
+
+.action-card p {
+    color: #64756e;
+    line-height: 1.7;
+}
+
+.card-link {
+    margin-top: auto;
+    padding-top: 20px;
+    color: #047857;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.card-link:hover {
+    color: #064e3b;
+}
+
+@media (max-width: 900px) {
+    .quick-actions {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .nav-links {
+        justify-content: flex-start;
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    .quick-actions {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* =================================
+   STUDENT DASHBOARD DESIGN
+================================= */
+
+.student-dashboard {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+/* Welcome banner */
+.student-hero {
+    background: linear-gradient(120deg, #064e3b, #059669);
+    color: white;
+    padding: 40px;
+    border-radius: 22px;
+    margin-bottom: 35px;
+    box-shadow: 0 10px 25px rgba(6, 78, 59, 0.12);
+}
+
+.student-hero h1 {
+    color: white;
+    font-size: 32px;
+    margin-top: 0;
+}
+
+.student-hero p {
+    color: #e4fff2;
+    font-size: 16px;
+}
+
+/* Dashboard heading */
+.student-section-title {
+    color: #064e3b;
+    font-size: 25px;
+    margin-bottom: 22px;
+}
+
+/* Dashboard cards */
+.student-actions {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 22px;
+    align-items: stretch;
+}
+
+.student-card {
+    display: flex;
+    flex-direction: column;
+    min-height: 280px;
+    padding: 25px;
+    background: white;
+    border: 1px solid #dcebe3;
+    border-radius: 20px;
+    text-decoration: none;
+    transition: 0.3s ease;
+}
+
+.student-card:hover {
+    transform: translateY(-6px);
+    border-color: #059669;
+    box-shadow: 0 12px 25px rgba(6, 78, 59, 0.10);
+}
+
+/* Card icons */
+.student-icon {
+    width: 58px;
+    height: 58px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #d1fae5;
+    border-radius: 16px;
+    font-size: 28px;
+}
+
+/* Card text */
+.student-card h3 {
+    color: #064e3b;
+    font-size: 20px;
+    margin: 17px 0 8px;
+}
+
+.student-card p {
+    color: #64756e;
+    line-height: 1.7;
+    margin: 0;
+}
+
+/* Align links at the bottom */
+.student-card-link {
+    margin-top: auto;
+    padding-top: 22px;
+    color: #047857;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.student-card-link:hover {
+    color: #064e3b;
+}
+
+/* Responsive design */
+@media (max-width: 900px) {
+    .student-actions {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .student-dashboard {
+        padding: 12px;
+    }
+
+    .student-hero {
+        padding: 25px;
+    }
+
+    .student-hero h1 {
+        font-size: 25px;
+    }
+
+    .student-actions {
+        grid-template-columns: 1fr;
+    }
+
+    .student-card {
+        min-height: 230px;
+    }
+}
+

@@ -1,0 +1,11 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>My Bookings</title>
+<link rel="stylesheet" href="/css/style.css"></head><body><main class="container"><h1>My booking requests</h1>
+<% if (!bookings.length) { %><p>No booking requests yet.</p><% } %>
+<% bookings.forEach(b => { %><section class="trip-card"><h2><%= b.starting_point %> → <%= b.destination %></h2>
+<p>Departure: <%= new Date(b.departure_time).toLocaleString() %></p><p>Driver: <%= b.driver_name %></p>
+<p>Seats requested: <%= b.seats_requested %></p><p>Status: <%= b.status %></p><p>Driver: <%= b.driver_name %></p>
+<p>Vehicle: <%= b.vehicle_model %></p>
+<p>Vehicle Number: <%= b.vehicle_number %></p>
+<p>Seats requested: <%= b.seats_requested %></p>
+<p>Status: <%= b.status %></p></section><% }) %>
+<a href="/dashboard">Dashboard</a></main></body></html>

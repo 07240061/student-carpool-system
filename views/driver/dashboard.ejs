@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driver Dashboard | CampusRide</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+    <nav class="navbar">
+        <a href="/driver/dashboard" class="brand">🚗 CampusRide</a>
+
+        <div class="nav-links">
+            <a href="/driver/dashboard">🏠 Dashboard</a>
+            <a href="/vehicle">🚘 My Vehicle</a>
+            <a href="/trips/new">➕ Create Trip</a>
+            <a href="/driver/bookings">📩 Requests</a>
+            <a href="/logout">Logout</a>
+        </div>
+    </nav>
+</header>
+
+<main class="dashboard-container">
+
+    <section class="dashboard-hero">
+        <h1>Welcome, Driver! 👋</h1>
+        <p>
+            Manage your vehicle, create trips and connect with students
+            travelling in the same direction.
+        </p>
+        <a href="/trips/new" class="btn dashboard-main-btn">
+            + Create a New Trip
+        </a>
+    </section>
+
+    <h2 class="section-title">What would you like to do?</h2>
+
+    <section class="quick-actions">
+
+        <a href="/vehicle" class="action-card">
+            <div class="action-icon">🚘</div>
+            <h3>My Vehicle</h3>
+            <p>Register and manage your vehicle details.</p>
+            <span class="card-link">Manage Vehicle →</span>
+        </a>
+
+        <a href="/trips/new" class="action-card">
+            <div class="action-icon">➕</div>
+            <h3>Create Trip</h3>
+            <p>Publish your journey and share available seats.</p>
+            <span class="card-link">Create Trip →</span>
+        </a>
+
+        <a href="/trips" class="action-card">
+            <div class="action-icon">🗺️</div>
+            <h3>My Trips</h3>
+            <p>View and manage the trips you have created.</p>
+            <span class="card-link">View Trips →</span>
+        </a>
+
+        <a href="/driver/bookings" class="action-card">
+            <div class="action-icon">📩</div>
+            <h3>Passenger Requests</h3>
+            <p>See students requesting seats on your trips.</p>
+            <span class="card-link">View Requests →</span>
+        </a>
+
+    </section>
+
+    <section class="driver-info-section">
+        <div class="section-heading">
+            <div>
+                <h2>Manage Your Rides</h2>
+                <p>Everything you need to organise your journeys.</p>
+            </div>
+        </div>
+
+        <div class="driver-feature-grid">
+
+            <div class="driver-feature">
+                <span>🚗</span>
+                <div>
+                    <h3>Vehicle Information</h3>
+                    <p>Keep your vehicle information updated.</p>
+                    <a href="/vehicle">Update vehicle details</a>
+                </div>
+            </div>
+
+            <div class="driver-feature">
+                <span>👥</span>
+                <div>
+                    <h3>Student Requests</h3>
+                    <p>Review and respond to passenger requests.</p>
+                    <a href="/driver/bookings">Manage requests</a>
+                </div>
+            </div>
+
+            <div class="driver-feature">
+                <span>📍</span>
+                <div>
+                    <h3>Travel Information</h3>
+                    <p>Share your destination and departure time.</p>
+                    <a href="/trips/new">Publish a journey</a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+</main>
+
+<footer class="site-footer">
+    <p>© 2026 CampusRide | Share your ride. Travel together.</p>
+</footer>
+
+</body>
+</html>

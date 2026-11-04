@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Trips | Student Carpool</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <main class="container">
+    <h1>My Carpool Trips</h1>
+    <% if (message) { %><p class="success"><%= message %></p><% } %>
+    <% if (error) { %><p class="error"><%= error %></p><% } %>
+
+    <h2>Create a trip</h2>
+    <% if (vehicles.length === 0) { %>
+      <p>You need to register a vehicle before creating a trip.</p>
+      <p><a href="/vehicle">Register a vehicle</a></p>
+    <% } else { %>
+      <form action="/trips" method="POST">
+        <label for="vehicle_id">Vehicle</label>
+        <select id="vehicle_id" name="vehicle_id" required>
+          <% vehicles.forEach(vehicle => { %>
+            <option value="<%= vehicle.vehicle_id %>">
+              <%= vehicle.vehicle_model %> — <%= vehicle.vehicle_number %> (capacity: <%= vehicle.seat_capacity %>)
+            </option>
+          <% }) %>
+        </select>
+
+        <label for="starting_point">Starting point</label>
+        <input id="starting_point" name="starting_point" type="text" required>
+
+        <label for="destination">Destination</label>
+        <input id="destination" name="destination" type="text" required>
+
+        <label for="departure_time">Departure date and time</label>
+        <input id="departure_time" name="departure_time" type="datetime-local" required>
+
+        <label for="available_seats">Seats available for passengers</label>
+        <input id="available_seats" name="available_seats" type="number" min="1" required>
+
+        <label for="fare">Fare per passenger (use 0 if free)</label>
+        <input id="fare" name="fare" type="number" min="0" step="0.01" value="0" required>
+
+        <button type="submit">Create Trip</button>
+      </form>
+    <% } %>
+
+    <h2>Trips I created</h2>
+    <% if (trips.length === 0) { %>
+      <p>You have not created any trips yet.</p>
+    <% } else { %>
+      <% trips.forEach(trip => { %>
+        <section class="trip-card">
+          <h3><%= trip.starting_point %> → <%= trip.destination %></h3>
+          <p>Departure: <%= new Date(trip.departure_time).toLocaleString() %></p>
+          <p>Seats available: <%= trip.available_seats %></p>
+          <p>Fare: <%= trip.fare %></p>
+          <p>Status: <%= trip.status %></p>
+        </section>
+      <% }) %>
+    <% } %>
+    <p><a href="/dashboard">Back to dashboard</a></p>
+  </main>
+</body>
+</html>

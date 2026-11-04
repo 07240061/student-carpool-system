@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CampusRide | Student Carpool System</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <style>
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 7%;
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .logo {
+            font-size: 23px;
+            font-weight: bold;
+            color: #047857;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+        }
+
+        .nav-links a {
+            font-weight: 600;
+        }
+
+        .nav-links .nav-button {
+            padding: 10px 18px;
+            background: #059669;
+            color: white;
+            border-radius: 8px;
+        }
+
+        .nav-links .nav-button:hover {
+            background: #047857;
+            text-decoration: none;
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 35px;
+            align-items: center;
+            max-width: 1150px;
+            margin: 55px auto;
+            padding: 45px 30px;
+            background: transparent;
+            box-shadow: none;
+        }
+
+        .hero-content {
+            text-align: left;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 7px 14px;
+            background: #d1fae5;
+            color: #065f46;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .hero h1 {
+            margin: 20px 0;
+            font-size: clamp(36px, 5vw, 55px);
+            line-height: 1.15;
+            color: #123b32;
+        }
+
+        .hero h1 span {
+            color: #059669;
+        }
+
+        .hero-description {
+            max-width: 520px;
+            color: #64748b;
+            font-size: 17px;
+            line-height: 1.8;
+        }
+
+        .hero-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 28px;
+        }
+
+        .hero-buttons a {
+            display: inline-block;
+            padding: 13px 22px;
+            border-radius: 9px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .primary-button {
+            background: #059669;
+            color: white;
+        }
+
+        .primary-button:hover {
+            background: #047857;
+            color: white;
+        }
+
+        .secondary-button {
+            background: white;
+            color: #047857;
+            border: 1px solid #a7f3d0;
+        }
+
+        .secondary-button:hover {
+            background: #ecfdf5;
+            color: #065f46;
+        }
+
+        .hero-visual {
+            padding: 30px;
+            background: linear-gradient(135deg, #d1fae5, #ecfdf5);
+            border-radius: 25px;
+        }
+
+        .ride-card {
+            padding: 25px;
+            background: white;
+            border-radius: 18px;
+            box-shadow: 0 12px 35px rgba(6, 78, 59, 0.10);
+        }
+
+        .ride-card h2 {
+            margin-top: 0;
+            font-size: 21px;
+        }
+
+        .ride-route {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin: 22px 0;
+        }
+
+        .route-icon {
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            background: #d1fae5;
+            border-radius: 12px;
+            font-size: 20px;
+        }
+
+        .route-text strong {
+            display: block;
+            color: #1f2937;
+        }
+
+        .route-text small {
+            color: #64748b;
+        }
+
+        .route-line {
+            width: 2px;
+            height: 20px;
+            margin-left: 20px;
+            background: #a7f3d0;
+        }
+
+        .ride-footer {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            padding-top: 18px;
+            border-top: 1px solid #e5e7eb;
+            color: #047857;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .features-section {
+            padding: 55px 7%;
+            background: white;
+            text-align: center;
+        }
+
+        .section-heading {
+            max-width: 650px;
+            margin: 0 auto 35px;
+        }
+
+        .section-heading h2 {
+            font-size: 32px;
+            color: #123b32;
+        }
+
+        .section-heading p {
+            color: #64748b;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        .feature-card {
+            padding: 28px;
+            text-align: left;
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+            border-radius: 15px;
+        }
+
+        .feature-icon {
+            width: 52px;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #d1fae5;
+            border-radius: 13px;
+            font-size: 25px;
+        }
+
+        .feature-card h3 {
+            margin-bottom: 10px;
+            color: #123b32;
+        }
+
+        .feature-card p {
+            margin-bottom: 0;
+            color: #64748b;
+            line-height: 1.7;
+        }
+
+        .steps-section {
+            padding: 55px 7%;
+            text-align: center;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            max-width: 1050px;
+            margin: 35px auto 0;
+        }
+
+        .step-card {
+            padding: 20px;
+        }
+
+        .step-number {
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: auto;
+            background: #059669;
+            color: white;
+            border-radius: 50%;
+            font-size: 19px;
+            font-weight: bold;
+        }
+
+        .step-card p {
+            color: #64748b;
+        }
+
+        .cta-section {
+            max-width: 1050px;
+            margin: 20px auto 55px;
+            padding: 45px 25px;
+            background: #064e3b;
+            color: white;
+            text-align: center;
+            border-radius: 20px;
+        }
+
+        .cta-section h2 {
+            color: white;
+            font-size: 30px;
+        }
+
+        .cta-section p {
+            color: #d1fae5;
+        }
+
+        .cta-section a {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 13px 24px;
+            background: white;
+            color: #047857;
+            border-radius: 8px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .site-footer {
+            padding: 25px 7%;
+            background: white;
+            border-top: 1px solid #e5e7eb;
+            text-align: center;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        @media (max-width: 800px) {
+            .hero {
+                grid-template-columns: 1fr;
+                margin: 20px auto;
+                padding: 25px 20px;
+            }
+
+            .hero-content {
+                text-align: center;
+            }
+
+            .hero-description {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+            }
+
+            .feature-grid,
+            .steps-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-visual {
+                max-width: 500px;
+                width: 100%;
+                margin: auto;
+            }
+
+            .cta-section {
+                margin: 20px;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+                padding: 18px;
+            }
+
+            .nav-links {
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+
+            .hero h1 {
+                font-size: 36px;
+            }
+
+            .hero-visual {
+                padding: 15px;
+            }
+
+            .ride-card {
+                padding: 18px;
+            }
+
+            .section-heading h2 {
+                font-size: 27px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="logo">🚗 CampusRide</div>
+
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/trips">Find a Ride</a>
+            <a href="/login">Login</a>
+            <a href="/register" class="nav-button">Get Started</a>
+        </div>
+    </nav>
+
+    <!-- Welcome Section -->
+    <main class="hero">
+
+        <div class="hero-content">
+            <span class="badge">🎓 Made for Students</span>
+
+            <h1>
+                Your journey,<br>
+                <span>shared together.</span>
+            </h1>
+
+            <p class="hero-description">
+                Connect with fellow students travelling in the same direction.
+                Share rides, make your journey easier, and find available seats
+                through one simple platform.
+            </p>
+
+            <div class="hero-buttons">
+                <a href="/trips" class="primary-button">Find a Ride →</a>
+                <a href="/register" class="secondary-button">Join CampusRide</a>
+            </div>
+        </div>
+
+        <!-- Example Ride Preview -->
+        <div class="hero-visual">
+            <div class="ride-card">
+                <h2>🗺️ Your next journey</h2>
+                <p style="color: #64748b;">
+                    Find a ride that matches your route.
+                </p>
+
+                <div class="ride-route">
+                    <div class="route-icon">📍</div>
+                    <div class="route-text">
+                        <strong>Your Starting Point</strong>
+                        <small>Choose your pickup location</small>
+                    </div>
+                </div>
+
+                <div class="route-line"></div>
+
+                <div class="ride-route">
+                    <div class="route-icon">🏫</div>
+                    <div class="route-text">
+                        <strong>Your Destination</strong>
+                        <small>Travel together to your destination</small>
+                    </div>
+                </div>
+
+                <div class="ride-footer">
+                    <span>👥 Student community</span>
+                    <span>🚘 Shared rides</span>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Features Section -->
+    <section class="features-section">
+        <div class="section-heading">
+            <h2>A smarter way to travel</h2>
+            <p>
+                CampusRide helps students connect and organise shared journeys
+                through a simple, student-friendly platform.
+            </p>
+        </div>
+
+        <div class="feature-grid">
+
+            <div class="feature-card">
+                <div class="feature-icon">🔎</div>
+                <h3>Find a Ride</h3>
+                <p>
+                    Look for available trips and find journeys that match
+                    your starting point and destination.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🚗</div>
+                <h3>Offer a Ride</h3>
+                <p>
+                    Students with vehicles can share trip details and
+                    let other students request available seats.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🤝</div>
+                <h3>Travel Together</h3>
+                <p>
+                    Connect with fellow students and make planning
+                    shared journeys easier.
+                </p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="steps-section">
+        <div class="section-heading">
+            <h2>How CampusRide works</h2>
+            <p>Get started in three simple steps.</p>
+        </div>
+
+        <div class="steps-grid">
+
+            <div class="step-card">
+                <div class="step-number">1</div>
+                <h3>Create an Account</h3>
+                <p>Register to access the student carpool platform.</p>
+            </div>
+
+            <div class="step-card">
+                <div class="step-number">2</div>
+                <h3>Find or Offer a Ride</h3>
+                <p>Search available trips or create a trip of your own.</p>
+            </div>
+
+            <div class="step-card">
+                <div class="step-number">3</div>
+                <h3>Manage Your Journey</h3>
+                <p>Use the platform to manage your trip and booking requests.</p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="cta-section">
+        <h2>Ready to get started?</h2>
+        <p>Join your student community and explore shared rides.</p>
+        <a href="/register">Create Your Account →</a>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <p>© 2026 CampusRide | Student Carpool System</p>
+        <p>Connecting students, one journey at a time.</p>
+    </footer>
+
+</body>
+</html>

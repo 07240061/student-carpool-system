@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard | CampusRide</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #f4f8f7;
+            color: #24352f;
+            font-family: Arial, sans-serif;
+        }
+
+        .dashboard-layout {
+            min-height: 100vh;
+        }
+
+        /* Top navigation */
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 5%;
+            background: white;
+            border-bottom: 1px solid #e5eee9;
+        }
+
+        .brand {
+            color: #047857;
+            font-size: 24px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .profile-circle {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: #d1fae5;
+            color: #065f46;
+            font-weight: bold;
+        }
+
+        .logout-link {
+            color: #b91c1c;
+            font-weight: bold;
+        }
+
+        /* Page content */
+        .dashboard-content {
+            max-width: 1250px;
+            margin: 0 auto;
+            padding: 30px 25px;
+        }
+
+        .welcome-banner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 25px;
+            padding: 35px;
+            color: white;
+            background: linear-gradient(120deg, #064e3b, #059669);
+            border-radius: 20px;
+        }
+
+        .welcome-banner h1 {
+            margin: 0 0 12px;
+            font-size: 32px;
+        }
+
+        .welcome-banner p {
+            margin: 0;
+            color: #d1fae5;
+            line-height: 1.7;
+        }
+
+        .welcome-emoji {
+            font-size: 65px;
+        }
+
+        .section-title {
+            margin: 35px 0 18px;
+            font-size: 23px;
+            color: #123b32;
+        }
+
+        /* Quick actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .action-card {
+            display: block;
+            padding: 22px;
+            background: white;
+            border: 1px solid #e5eee9;
+            border-radius: 15px;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .action-card:hover {
+            transform: translateY(-4px);
+            border-color: #6ee7b7;
+            box-shadow: 0 8px 22px rgba(6, 78, 59, 0.08);
+        }
+
+        .action-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            margin-bottom: 15px;
+            background: #d1fae5;
+            border-radius: 12px;
+            font-size: 24px;
+        }
+
+        .action-card h3 {
+            margin: 0 0 8px;
+            color: #123b32;
+            font-size: 17px;
+        }
+
+        .action-card p {
+            margin: 0;
+            color: #718078;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* Statistics */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .stat-card {
+            padding: 23px;
+            background: white;
+            border: 1px solid #e5eee9;
+            border-radius: 15px;
+        }
+
+        .stat-label {
+            color: #718078;
+            font-size: 14px;
+        }
+
+        .stat-number {
+            display: block;
+            margin: 12px 0 5px;
+            color: #065f46;
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        .stat-description {
+            color: #8b9991;
+            font-size: 12px;
+        }
+
+        /* Main dashboard columns */
+        .dashboard-columns {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 22px;
+            margin-top: 30px;
+        }
+
+        .panel {
+            padding: 25px;
+            background: white;
+            border: 1px solid #e5eee9;
+            border-radius: 16px;
+        }
+
+        .panel-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .panel-heading h2 {
+            margin: 0;
+            font-size: 20px;
+            color: #123b32;
+        }
+
+        .view-link {
+            color: #047857;
+            font-size: 14px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .empty-state {
+            padding: 25px 12px;
+            text-align: center;
+            background: #f8faf9;
+            border-radius: 12px;
+        }
+
+        .empty-state .empty-icon {
+            font-size: 36px;
+        }
+
+        .empty-state h3 {
+            margin-bottom: 8px;
+            color: #374151;
+        }
+
+        .empty-state p {
+            color: #718078;
+            font-size: 14px;
+        }
+
+        .small-button {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 10px 15px;
+            background: #059669;
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        /* Tips */
+        .tip-item {
+            display: flex;
+            gap: 13px;
+            padding: 15px 0;
+            border-bottom: 1px solid #edf2ef;
+        }
+
+        .tip-item:last-child {
+            border-bottom: none;
+        }
+
+        .tip-icon {
+            font-size: 24px;
+        }
+
+        .tip-item h3 {
+            margin: 0 0 5px;
+            color: #374151;
+            font-size: 15px;
+        }
+
+        .tip-item p {
+            margin: 0;
+            color: #718078;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        /* Bottom links */
+        .bottom-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 30px;
+            padding: 22px;
+            background: white;
+            border: 1px solid #e5eee9;
+            border-radius: 15px;
+        }
+
+        .bottom-links a {
+            padding: 10px 15px;
+            background: #ecfdf5;
+            border-radius: 8px;
+            color: #047857;
+            font-size: 14px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .dashboard-footer {
+            padding: 25px;
+            text-align: center;
+            color: #718078;
+            font-size: 13px;
+        }
+
+        @media (max-width: 900px) {
+            .quick-actions,
+            .stats-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .dashboard-columns {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 550px) {
+            .topbar {
+                padding: 15px;
+            }
+
+            .topbar-right {
+                gap: 10px;
+            }
+
+            .dashboard-content {
+                padding: 20px 14px;
+            }
+
+            .welcome-banner {
+                padding: 25px 20px;
+            }
+
+            .welcome-banner h1 {
+                font-size: 25px;
+            }
+
+            .welcome-emoji {
+                display: none;
+            }
+
+            .quick-actions,
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .panel {
+                padding: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<%
+    const currentUser = typeof user !== 'undefined' ? user : {};
+    const displayName =
+        currentUser.full_name ||
+        currentUser.name ||
+        currentUser.username ||
+        'Student';
+
+    const initial = displayName.charAt(0).toUpperCase();
+%>
+
+<div class="dashboard-layout">
+
+    <!-- Navigation -->
+    <header class="topbar">
+        <a href="/dashboard" class="brand">🚗 CampusRide</a>
+
+        <div class="topbar-right">
+            <span>Welcome, <strong><%= displayName %></strong></span>
+
+            <div class="profile-circle">
+                <%= initial %>
+            </div>
+
+            <a href="/logout" class="logout-link">Logout</a>
+        </div>
+    </header>
+
+    <main class="dashboard-content">
+
+        <!-- Welcome Banner -->
+        <section class="welcome-banner">
+            <div>
+                <h1>Hello, <%= displayName %>! 👋</h1>
+
+                <p>
+                    Welcome to your student carpool dashboard.<br>
+                    Find a ride, offer a seat, and manage your journeys.
+                </p>
+            </div>
+
+            <div class="welcome-emoji">🚘</div>
+        </section>
+
+        <!-- Quick Actions -->
+        <h2 class="section-title">What would you like to do?</h2>
+        
+        <section class="quick-actions">
+            <!-- Find a Ride -->
+             <a href="/trips/search" class="action-card">
+                <div class="action-icon">🔎</div>
+                <h3>Find a Ride</h3>
+                <p>Search for trips that match your journey.</p>
+            </a>
+            <!-- Offer a Ride -->
+             
+            <a href="/trips/new" class="action-card">
+                <div class="action-icon">🗺️</div>
+                <h3>Offer a Ride</h3>
+                <p>Create a trip and share available seats.</p>
+            </a>
+            
+            <!-- Register Vehicle -->
+             <a href="/vehicle" class="action-card">
+                <div class="action-icon">🚘</div>
+                <h3>Register Vehicle</h3>
+                <p>Add your vehicle details to the platform.</p>
+            </a>
+            
+            <!-- My Bookings -->
+             <a href="/bookings" class="action-card">
+                <div class="action-icon">🎫</div>
+                <h3>My Bookings</h3>
+                <p>Check your ride booking requests.</p>
+            </a>
+        </section>
+
+        
+
+        <!-- Statistics -->
+        <h2 class="section-title">Your Activity</h2>
+
+        <section class="stats-grid">
+
+            <div class="stat-card">
+                <span class="stat-label">Available Rides</span>
+                <span class="stat-number">🚘</span>
+                <span class="stat-description">Explore available trips</span>
+            </div>
+
+            <div class="stat-card">
+                <span class="stat-label">My Trips</span>
+                <span class="stat-number">🗺️</span>
+                <span class="stat-description">Manage trips you offer</span>
+            </div>
+
+            <div class="stat-card">
+                <span class="stat-label">My Bookings</span>
+                <span class="stat-number">🎫</span>
+                <span class="stat-description">Review your bookings</span>
+            </div>
+
+            <div class="stat-card">
+                <span class="stat-label">Pending Requests</span>
+                <span class="stat-number">📬</span>
+                <span class="stat-description">Review outstanding requests</span>
+            </div>
+
+        </section>
+
+        <!-- Recent Trips and Tips -->
+        <section class="dashboard-columns">
+
+            <div class="panel">
+                <div class="panel-heading">
+                    <h2>🗺️ Recent Trips</h2>
+                    <a href="/trips" class="view-link">View trips →</a>
+                </div>
+
+                <div class="empty-state">
+                    <div class="empty-icon">🚗</div>
+                    <h3>Ready for your next journey?</h3>
+                    <p>
+                        Explore available trips and look for a ride
+                        that matches your destination.
+                    </p>
+                    <a href="/trips" class="small-button">Explore Rides</a>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-heading">
+                    <h2>🛡️ Travel Tips</h2>
+                </div>
+
+                <div class="tip-item">
+                    <div class="tip-icon">👤</div>
+                    <div>
+                        <h3>Check Driver Details</h3>
+                        <p>Review available driver and vehicle information before booking.</p>
+                    </div>
+                </div>
+
+                <div class="tip-item">
+                    <div class="tip-icon">⏰</div>
+                    <div>
+                        <h3>Be on Time</h3>
+                        <p>Confirm the pickup time and arrive at the agreed location.</p>
+                    </div>
+                </div>
+
+                <div class="tip-item">
+                    <div class="tip-icon">💬</div>
+                    <div>
+                        <h3>Communicate Clearly</h3>
+                        <p>Agree on the pickup point and journey details before travelling.</p>
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- Useful Links -->
+        <h2 class="section-title">Quick Navigation</h2>
+        
+        <nav class="bottom-links">
+            <a href="/">🏠 Home</a>
+            <a href="/trips/search">🔎 Browse Trips</a>
+            <a href="/trips/new">➕ Create Trip</a>
+            <a href="/bookings">🎫 My Bookings</a>
+            <a href="/vehicle">🚗 My Vehicle</a>
+            <a href="/logout">🚪 Logout</a>
+        </nav>
+        
+
+    </main>
+
+    <footer class="dashboard-footer">
+        <p>© 2026 CampusRide | Student Carpool System</p>
+        <p>Connecting students, one journey at a time. 🌿</p>
+    </footer>
+
+</div>
+
+</body>
+</html>

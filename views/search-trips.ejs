@@ -1,0 +1,15 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Search Trips</title>
+<link rel="stylesheet" href="/css/style.css"></head><body><main class="container"><h1>Search rides</h1>
+<form action="/trips/search" method="GET">
+<label for="from">Starting point</label><input id="from" name="from" value="<%= from %>">
+<label for="to">Destination</label><input id="to" name="to" value="<%= to %>"><button>Search</button></form>
+<% if (!trips.length) { %><p>No matching available trips.</p><% } %>
+<% trips.forEach(t => { %><section class="trip-card"><h2><%= t.starting_point %> → <%= t.destination %></h2>
+<p>Driver: <%= t.driver_name %></p><p>Departure: <%= new Date(t.departure_time).toLocaleString() %></p>
+<p>Driver: <%= t.driver_name %></p>
+<p>Vehicle: <%= t.vehicle_model %></p>
+<p>Vehicle Number: <%= t.vehicle_number %></p>
+<p>Seats: <%= t.available_seats %></p><p>Fare: <%= t.fare %></p>
+<form action="/trips/<%= t.trip_id %>/book" method="POST"><button>Request one seat</button></form></section><% }) %>
+<a href="/dashboard">Dashboard</a></main></body></html>
+
