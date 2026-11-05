@@ -1,71 +1,107 @@
 const nodemailer = require('nodemailer');
 
-async function sendVerificationEmail(to, token) {
-    const requiredSettings = ['APP_URL', 'MAIL_FROM'];
-    const missingSettings = requiredSettings.filter((setting) => !process.env[setting]);
-
-    if (missingSettings.length > 0) {
-        throw new Error(`Missing email configuration: ${missingSettings.join(', ')}`);
+async function sendVerificationEmail(to, token, requestBaseUrl) {
+    const appUrlValue = process.env.APP_URL || requestBaseUrl;
+    if (!appUrlValue) {
+        throw new Error('Unable to determine the app URL for the verification link.');
     }
 
-    const appUrl = new URL(process.env.APP_URL);
+    const appUrl = new URL(appUrlValue);
     if (appUrl.protocol !== 'http:' && appUrl.protocol !== 'https:') {
-        throw new Error('APP_URL must start with http:// or https://.');
+        throw new Error('The app URL must start with http:// or https://.');
     }
 
     const verificationUrl = new URL('/verify-email', appUrl);
     verificationUrl.searchParams.set('token', token);
 
+    const provider = (process.env.EMAIL_PROVIDER || 'smtp').toLowerCase();
+    const sender = process.env.MAIL_FROM ||
+        (provider === 'gmail-api' ? process.env.GMAIL_USER : process.env.SMTP_USER);
+
+    if (!sender) {
+        throw new Error('Set the sender email account for the selected email provider.');
+    }
+
     const email = {
-        from: process.env.MAIL_FROM,
+        from: sender,
         to,
         subject: 'Verify your Student Carpool account',
         text: `Welcome to Student Carpool!\n\nVerify your email within 24 hours by opening this link:\n${verificationUrl}\n\nIf you did not create this account, you can ignore this email.`
     };
-    const provider = (process.env.EMAIL_PROVIDER || 'smtp').toLowerCase();
 
-    if (provider === 'google-apps-script') {
-        const appsScriptSettings = ['APPS_SCRIPT_URL', 'APPS_SCRIPT_SECRET'];
-        const missingAppsScriptSettings = appsScriptSettings.filter((setting) => !process.env[setting]);
-        if (missingAppsScriptSettings.length > 0) {
-            throw new Error(`Missing email configuration: ${missingAppsScriptSettings.join(', ')}`);
+    if (provider === 'gmail-api') {
+        const gmailSettings = [
+            'GMAIL_USER',
+            'GMAIL_CLIENT_ID',
+            'GMAIL_CLIENT_SECRET',
+            'GMAIL_REFRESH_TOKEN'
+        ];
+        const missingGmailSettings = gmailSettings.filter((setting) => !process.env[setting]);
+        if (missingGmailSettings.length > 0) {
+            throw new Error(`Missing email configuration: ${missingGmailSettings.join(', ')}`);
+        }
+        if (/[\r\n]/.test(email.from)) {
+            throw new Error('MAIL_FROM must not contain line breaks.');
         }
 
-        const scriptUrl = new URL(process.env.APPS_SCRIPT_URL);
-        if (
-            scriptUrl.protocol !== 'https:' ||
-            scriptUrl.hostname !== 'script.google.com' ||
-            !scriptUrl.pathname.startsWith('/macros/s/') ||
-            !scriptUrl.pathname.endsWith('/exec')
-        ) {
-            throw new Error('APPS_SCRIPT_URL must be the HTTPS deployment URL ending in /exec.');
-        }
-
-        const senderName = process.env.MAIL_FROM.split('<')[0].trim() || 'Student Carpool';
-        const response = await fetch(scriptUrl, {
+        const tokenResponse = await fetch('https://oauth2.googleapis.com/token', {
             method: 'POST',
-            redirect: 'follow',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                secret: process.env.APPS_SCRIPT_SECRET,
-                to,
-                subject: email.subject,
-                text: email.text,
-                senderName
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams({
+                client_id: process.env.GMAIL_CLIENT_ID,
+                client_secret: process.env.GMAIL_CLIENT_SECRET,
+                refresh_token: process.env.GMAIL_REFRESH_TOKEN,
+                grant_type: 'refresh_token'
             })
         });
-        const responseText = await response.text();
-        let result;
+        const tokenResponseText = await tokenResponse.text();
+        let tokenResult;
 
         try {
-            result = JSON.parse(responseText);
+            tokenResult = JSON.parse(tokenResponseText);
         } catch {
-            throw new Error(`Google Apps Script returned an invalid response (${response.status}).`);
+            throw new Error(`Google OAuth returned an invalid response (${tokenResponse.status}).`);
         }
 
-        if (!response.ok || result.ok !== true) {
-            const detail = typeof result.error === 'string' ? result.error : `HTTP ${response.status}`;
-            throw new Error(`Google Apps Script email error: ${detail}`);
+        if (!tokenResponse.ok || !tokenResult || typeof tokenResult.access_token !== 'string') {
+            const detail = tokenResult && typeof tokenResult.error_description === 'string'
+                ? tokenResult.error_description
+                : tokenResult && typeof tokenResult.error === 'string'
+                    ? tokenResult.error
+                    : `HTTP ${tokenResponse.status}`;
+            throw new Error(`Google OAuth token error: ${detail}`);
+        }
+
+        const message = [
+            `From: ${email.from}`,
+            `To: ${email.to}`,
+            `Subject: =?UTF-8?B?${Buffer.from(email.subject, 'utf8').toString('base64')}?=`,
+            'MIME-Version: 1.0',
+            'Content-Type: text/plain; charset=UTF-8',
+            'Content-Transfer-Encoding: base64',
+            '',
+            Buffer.from(email.text, 'utf8').toString('base64').match(/.{1,76}/g).join('\r\n')
+        ].join('\r\n');
+        const rawMessage = Buffer.from(message, 'utf8')
+            .toString('base64')
+            .replace(/\+/g, '-')
+            .replace(/\//g, '_')
+            .replace(/=+$/, '');
+        const sendResponse = await fetch(
+            `https://gmail.googleapis.com/gmail/v1/users/${encodeURIComponent(process.env.GMAIL_USER)}/messages/send`,
+            {
+                method: 'POST',
+                headers: {
+                    Authorization: `Bearer ${tokenResult.access_token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ raw: rawMessage })
+            }
+        );
+
+        if (!sendResponse.ok) {
+            const responseText = await sendResponse.text();
+            throw new Error(`Gmail API error (${sendResponse.status}): ${responseText.slice(0, 500)}`);
         }
 
         return;
@@ -74,6 +110,9 @@ async function sendVerificationEmail(to, token) {
     if (provider === 'resend') {
         if (!process.env.RESEND_API_KEY) {
             throw new Error('Missing email configuration: RESEND_API_KEY');
+        }
+        if (!process.env.MAIL_FROM) {
+            throw new Error('Resend requires MAIL_FROM to be set to a verified sender address.');
         }
 
         const response = await fetch('https://api.resend.com/emails', {
@@ -94,7 +133,7 @@ async function sendVerificationEmail(to, token) {
     }
 
     if (provider !== 'smtp') {
-        throw new Error(`Unsupported EMAIL_PROVIDER: ${provider}`);
+        throw new Error(`Unsupported EMAIL_PROVIDER: ${provider}. Use gmail-api, resend, or smtp.`);
     }
 
     const smtpSettings = ['SMTP_HOST', 'SMTP_PORT', 'SMTP_USER', 'SMTP_PASSWORD'];

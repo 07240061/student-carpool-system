@@ -9,6 +9,7 @@ const pool = require('./config/db');
 const { sendVerificationEmail } = require('./services/email');
 const app = express();
 
+app.set('trust proxy', 1);
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.urlencoded({ extended: true }));
@@ -60,7 +61,7 @@ app.get('/register', (req, res) => res.render('auth/register', {
     verificationSent: req.query.verificationSent === '1'
 }));
 app.post('/register', async (req, res) => {
-    let registrationStage = 'account setup';
+    let accountCreated = false;
     try {
         const fullName = (req.body.full_name || '').trim();
         const email = (req.body.email || '').trim().toLowerCase();
@@ -80,7 +81,6 @@ app.post('/register', async (req, res) => {
             .createHash('sha256')
             .update(verificationToken)
             .digest('hex');
-        registrationStage = 'database';
         const result = await pool.query(
             `INSERT INTO users (
                 full_name, email, password, role, email_verified,
@@ -102,17 +102,15 @@ app.post('/register', async (req, res) => {
             });
         }
 
-        registrationStage = 'email';
-        await sendVerificationEmail(email, verificationToken);
+        accountCreated = true;
+        await sendVerificationEmail(email, verificationToken, `${req.protocol}://${req.get('host')}`);
         res.redirect('/register?verificationSent=1');
     } catch (error) {
-        console.error(`Registration ${registrationStage} error:`, error.code || '', error.message);
+        console.error('Registration error:', error.message);
         res.status(500).render('auth/register', {
-            error: registrationStage === 'database'
-                ? 'The server could not create your account because its database is unavailable. Please contact the app owner.'
-                : registrationStage === 'email'
-                    ? 'Your account was created, but the verification email could not be sent. The app owner should check the email settings. You can resend the email after the issue is fixed.'
-                    : 'Could not complete registration. Please try again or contact the app owner.',
+            error: accountCreated
+                ? 'Your account was created, but the verification email could not be sent. Fix the email settings, then submit the form again to resend it.'
+                : 'Registration failed before the account could be created. Check the database connection and the VS Code terminal.',
             verificationSent: false
         });
     }
@@ -145,7 +143,11 @@ app.post('/resend-verification', async (req, res) => {
         );
 
         if (result.rowCount > 0) {
-            await sendVerificationEmail(result.rows[0].email, verificationToken);
+            await sendVerificationEmail(
+                result.rows[0].email,
+                verificationToken,
+                `${req.protocol}://${req.get('host')}`
+            );
         }
 
         res.render('auth/register', {
@@ -154,7 +156,7 @@ app.post('/resend-verification', async (req, res) => {
             resendMessage: 'If an unverified account exists for that address, a new verification email has been sent.'
         });
     } catch (error) {
-        console.error('Resend verification email error:', error.code || error.statusCode || '', error.message);
+        console.error('Resend verification email error:', error.message);
         res.status(500).render('auth/register', {
             error: 'Could not resend the verification email. Check the email settings and try again.',
             verificationSent: false
